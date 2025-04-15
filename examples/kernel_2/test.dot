@@ -1,0 +1,134 @@
+digraph "" {
+	node [label="\N"];
+	subgraph "cluster_if.end" {
+		graph [color=darkgreen,
+			label="if.end"
+		];
+		"_a.addr.0"	[bbID="if.end",
+			bitwidth=32,
+			id=3,
+			instruction="%a.addr.0 = phi i32 [ %div, %if.then ], [ %rem, %if.else ]",
+			label="phi _a.addr.0",
+			type=phi];
+		_xor	[bbID="if.end",
+			bitwidth=32,
+			id=3,
+			instruction="%xor = xor i32 %a.addr.0, %mul4",
+			label="xor _xor",
+			type=xor];
+		"_a.addr.0" -> _xor;
+		_mul4	[bbID="if.end",
+			bitwidth=32,
+			id=3,
+			instruction="%mul4 = mul nsw i32 %c, %b",
+			label="mul _mul4",
+			type=mul];
+		_mul4 -> _xor;
+		"ret_if.end"	[bbID="if.end",
+			bitwidth=0,
+			id=3,
+			instruction="ret i32 %xor",
+			label="ret_if.end",
+			type=ret];
+		_xor -> "ret_if.end";
+	}
+	subgraph "cluster_if.else" {
+		graph [color=darkgreen,
+			label="if.else"
+		];
+		_mul3	[bbID="if.else",
+			bitwidth=32,
+			id=2,
+			instruction="%mul3 = mul nsw i32 %mul1, %c",
+			label="mul _mul3",
+			type=mul];
+		_rem	[bbID="if.else",
+			bitwidth=32,
+			id=2,
+			instruction="%rem = srem i32 %b, %mul3",
+			label="srem _rem",
+			type=srem];
+		_mul3 -> _rem;
+	}
+	subgraph cluster_entry {
+		graph [color=darkgreen,
+			label=entry
+		];
+		_mul	[bbID=entry,
+			bitwidth=32,
+			id=0,
+			instruction="%mul = mul nsw i32 %b, %a",
+			label="mul _mul",
+			type=mul];
+		_mul1	[bbID=entry,
+			bitwidth=32,
+			id=0,
+			instruction="%mul1 = mul nsw i32 %mul, 100",
+			label="mul _mul1",
+			type=mul];
+		_mul -> _mul1;
+		_b	[bbID=entry,
+			id=0,
+			type=argument];
+		_b -> _mul;
+		_a	[bbID=entry,
+			id=0,
+			type=argument];
+		_a -> _mul;
+		_cmp	[bbID=entry,
+			bitwidth=1,
+			id=0,
+			instruction="%cmp = icmp slt i32 %mul1, %n",
+			label="icmp_slt _cmp",
+			type=icmp];
+		_mul1 -> _cmp;
+		cst__mul1_0	[bbID=entry,
+			id=0,
+			label=100,
+			type=constant,
+			value=0];
+		cst__mul1_0 -> _mul1;
+		br_entry	[bbID=entry,
+			bitwidth=0,
+			id=0,
+			instruction="br i1 %cmp, label %if.then, label %if.else",
+			label=br_entry,
+			type=br];
+		_cmp -> br_entry;
+		_n	[bbID=entry,
+			id=0,
+			type=argument];
+		_n -> _cmp;
+		_c	[bbID=entry,
+			id=0,
+			type=argument];
+	}
+	subgraph "cluster_if.then" {
+		graph [color=darkgreen,
+			label="if.then"
+		];
+		_mul2	[bbID="if.then",
+			bitwidth=32,
+			id=1,
+			instruction="%mul2 = mul nsw i32 %n, %c",
+			label="mul _mul2",
+			type=mul];
+		_div	[bbID="if.then",
+			bitwidth=32,
+			id=1,
+			instruction="%div = sdiv i32 %mul1, %mul2",
+			label="sdiv _div",
+			type=sdiv];
+		_mul2 -> _div;
+	}
+	_b -> _rem;
+	_b -> _mul4;
+	_mul1 -> _div;
+	_mul1 -> _mul3;
+	_n -> _mul2;
+	_c -> _mul2;
+	_c -> _mul3;
+	_c -> _mul4;
+	_div -> "_a.addr.0";
+	_rem -> "_a.addr.0";
+}

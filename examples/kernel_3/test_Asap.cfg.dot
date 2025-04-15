@@ -1,0 +1,15 @@
+strict graph "" {
+	node [label="\N"];
+	"for.body"	[id=1,
+		label="BB1
+(for.body)"];
+	"for.body" -- "for.body";
+	"for.end"	[id=2,
+		label="BB2
+(for.end)"];
+	"for.body" -- "for.end";
+	entry	[id=0,
+		label="BB0
+(entry)"];
+	entry -- "for.body";
+}

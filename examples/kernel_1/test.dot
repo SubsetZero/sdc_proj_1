@@ -1,0 +1,180 @@
+digraph "" {
+	node [label="\N"];
+	subgraph "cluster_if.end" {
+		graph [color=darkgreen,
+			label="if.end"
+		];
+		"_c.addr.0"	[bbID="if.end",
+			bitwidth=32,
+			id=2,
+			instruction="%c.addr.0 = phi i32 [ %shr6, %if.then ], [ %c, %entry ]",
+			label="phi _c.addr.0",
+			type=phi];
+		_shr8	[bbID="if.end",
+			bitwidth=32,
+			id=2,
+			instruction="%shr8 = ashr i32 %n, %c.addr.0",
+			label="ashr _shr8",
+			type=ashr];
+		"_c.addr.0" -> _shr8;
+		"_a.addr.0"	[bbID="if.end",
+			bitwidth=32,
+			id=2,
+			instruction="%a.addr.0 = phi i32 [ %mul4, %if.then ], [ %shr, %entry ]",
+			label="phi _a.addr.0",
+			type=phi];
+		_add7	[bbID="if.end",
+			bitwidth=32,
+			id=2,
+			instruction="%add7 = add nsw i32 %a.addr.0, %b",
+			label="add _add7",
+			type=add];
+		"_a.addr.0" -> _add7;
+		_mul9	[bbID="if.end",
+			bitwidth=32,
+			id=2,
+			instruction="%mul9 = mul nsw i32 %add7, %shr8",
+			label="mul _mul9",
+			type=mul];
+		_add7 -> _mul9;
+		_shr8 -> _mul9;
+		"ret_if.end"	[bbID="if.end",
+			bitwidth=0,
+			id=2,
+			instruction="ret i32 %mul9",
+			label="ret_if.end",
+			type=ret];
+		_mul9 -> "ret_if.end";
+	}
+	subgraph "cluster_if.then" {
+		graph [color=darkgreen,
+			label="if.then"
+		];
+		_shr3	[bbID="if.then",
+			bitwidth=32,
+			id=1,
+			instruction="%shr3 = ashr i32 %shr, %n",
+			label="ashr _shr3",
+			type=ashr];
+		_mul4	[bbID="if.then",
+			bitwidth=32,
+			id=1,
+			instruction="%mul4 = mul nsw i32 %shr3, %b",
+			label="mul _mul4",
+			type=mul];
+		_shr3 -> _mul4;
+		_shr6	[bbID="if.then",
+			bitwidth=32,
+			id=1,
+			instruction="%shr6 = ashr i32 %shr3, %c",
+			label="ashr _shr6",
+			type=ashr];
+		_shr3 -> _shr6;
+	}
+	subgraph cluster_entry {
+		graph [color=darkgreen,
+			label=entry
+		];
+		_add	[bbID=entry,
+			bitwidth=32,
+			id=0,
+			instruction="%add = add nsw i32 %b, %a",
+			label="add _add",
+			type=add];
+		_mul	[bbID=entry,
+			bitwidth=32,
+			id=0,
+			instruction="%mul = mul nsw i32 %add, %n",
+			label="mul _mul",
+			type=mul];
+		_add -> _mul;
+		_b	[bbID=entry,
+			id=0,
+			type=argument];
+		_b -> _add;
+		_sub	[bbID=entry,
+			bitwidth=32,
+			id=0,
+			instruction="%sub = sub nsw i32 %mul1, %b",
+			label="sub _sub",
+			type=sub];
+		_b -> _sub;
+		_mul2	[bbID=entry,
+			bitwidth=32,
+			id=0,
+			instruction="%mul2 = mul nsw i32 %c, %b",
+			label="mul _mul2",
+			type=mul];
+		_b -> _mul2;
+		_a	[bbID=entry,
+			id=0,
+			type=argument];
+		_a -> _add;
+		_shr	[bbID=entry,
+			bitwidth=32,
+			id=0,
+			instruction="%shr = ashr i32 %mul, %c",
+			label="ashr _shr",
+			type=ashr];
+		_mul -> _shr;
+		_n	[bbID=entry,
+			id=0,
+			type=argument];
+		_n -> _mul;
+		_div	[bbID=entry,
+			bitwidth=32,
+			id=0,
+			instruction="%div = sdiv i32 %n, %mul2",
+			label="sdiv _div",
+			type=sdiv];
+		_n -> _div;
+		_mul1	[bbID=entry,
+			bitwidth=32,
+			id=0,
+			instruction="%mul1 = mul nsw i32 %shr, %c",
+			label="mul _mul1",
+			type=mul];
+		_shr -> _mul1;
+		_c	[bbID=entry,
+			id=0,
+			type=argument];
+		_c -> _shr;
+		_c -> _mul1;
+		_c -> _mul2;
+		_rem	[bbID=entry,
+			bitwidth=32,
+			id=0,
+			instruction="%rem = srem i32 %div, %c",
+			label="srem _rem",
+			type=srem];
+		_c -> _rem;
+		_mul1 -> _sub;
+		_cmp	[bbID=entry,
+			bitwidth=1,
+			id=0,
+			instruction="%cmp = icmp slt i32 %sub, %rem",
+			label="icmp_slt _cmp",
+			type=icmp];
+		_sub -> _cmp;
+		_mul2 -> _div;
+		_div -> _rem;
+		_rem -> _cmp;
+		br_entry	[bbID=entry,
+			bitwidth=0,
+			id=0,
+			instruction="br i1 %cmp, label %if.end, label %if.then",
+			label=br_entry,
+			type=br];
+		_cmp -> br_entry;
+	}
+	_b -> _mul4;
+	_b -> _add7;
+	_n -> _shr3;
+	_n -> _shr8;
+	_shr -> _shr3;
+	_shr -> "_a.addr.0";
+	_c -> _shr6;
+	_c -> "_c.addr.0";
+	_mul4 -> "_a.addr.0";
+	_shr6 -> "_c.addr.0";
+}

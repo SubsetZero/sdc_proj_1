@@ -1,0 +1,15 @@
+strict graph "" {
+	node [label="\N"];
+	entry	[id=0,
+		label="BB0
+(entry)"];
+	"if.then"	[id=1,
+		label="BB1
+(if.then)"];
+	entry -- "if.then";
+	"if.end"	[id=2,
+		label="BB2
+(if.end)"];
+	entry -- "if.end";
+	"if.then" -- "if.end";
+}

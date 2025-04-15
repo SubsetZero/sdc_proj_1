@@ -1,0 +1,247 @@
+digraph "" {
+	node [label="\N"];
+	subgraph "cluster_for.end" {
+		graph [color=darkgreen,
+			label="for.end"
+		];
+		"ret_for.end"	[bbID="for.end",
+			bitwidth=0,
+			id=2,
+			instruction="ret i32 %add11",
+			label="ret_for.end",
+			type=ret];
+	}
+	subgraph cluster_entry {
+		graph [color=darkgreen,
+			label=entry
+		];
+		_a	[bbID=entry,
+			id=0,
+			type=argument];
+		_c	[bbID=entry,
+			id=0,
+			type=argument];
+		_b	[bbID=entry,
+			id=0,
+			type=argument];
+		_n	[bbID=entry,
+			id=0,
+			type=argument];
+	}
+	subgraph "cluster_for.body" {
+		graph [color=darkgreen,
+			label="for.body"
+		];
+		"_a.addr.03"	[bbID="for.body",
+			bitwidth=32,
+			id=1,
+			instruction="%a.addr.03 = phi i32 [ %a, %entry ], [ %rem, %for.body ]",
+			label="phi _a.addr.03",
+			type=phi];
+		_add4	[bbID="for.body",
+			bitwidth=32,
+			id=1,
+			instruction="%add4 = add nsw i32 %a.addr.03, 10",
+			label="add _add4",
+			type=add];
+		"_a.addr.03" -> _add4;
+		_rem	[bbID="for.body",
+			bitwidth=32,
+			id=1,
+			instruction="%rem = srem i32 %b, %add7",
+			label="srem _rem",
+			type=srem];
+		_rem -> "_a.addr.03"	[style=dashed];
+		_mul8	[bbID="for.body",
+			bitwidth=32,
+			id=1,
+			instruction="%mul8 = mul nsw i32 %rem, %n",
+			label="mul _mul8",
+			type=mul];
+		_rem -> _mul8;
+		"_i.02"	[bbID="for.body",
+			bitwidth=32,
+			id=1,
+			instruction="%i.02 = phi i32 [ 0, %entry ], [ %inc, %for.body ]",
+			label="phi _i.02",
+			type=phi];
+		_inc	[bbID="for.body",
+			bitwidth=32,
+			id=1,
+			instruction="%inc = add nuw nsw i32 %i.02, 1",
+			label="add _inc",
+			type=add];
+		"_i.02" -> _inc;
+		_inc -> "_i.02"	[style=dashed];
+		_cmp	[bbID="for.body",
+			bitwidth=1,
+			id=1,
+			instruction="%cmp = icmp ult i32 %inc, 100",
+			label="icmp_ult _cmp",
+			type=icmp];
+		_inc -> _cmp;
+		"cst__i.02_0"	[bbID="for.body",
+			id=1,
+			label=0,
+			type=constant,
+			value=0];
+		"cst__i.02_0" -> "_i.02";
+		"_c.addr.01"	[bbID="for.body",
+			bitwidth=32,
+			id=1,
+			instruction="%c.addr.01 = phi i32 [ %c, %entry ], [ %add11, %for.body ]",
+			label="phi _c.addr.01",
+			type=phi];
+		_add11	[bbID="for.body",
+			bitwidth=32,
+			id=1,
+			instruction="%add11 = add nsw i32 %c.addr.01, %xor",
+			label="add _add11",
+			type=add];
+		"_c.addr.01" -> _add11;
+		_add2	[bbID="for.body",
+			bitwidth=32,
+			id=1,
+			instruction="%add2 = add nsw i32 %c.addr.01, 40",
+			label="add _add2",
+			type=add];
+		"_c.addr.01" -> _add2;
+		_add6	[bbID="for.body",
+			bitwidth=32,
+			id=1,
+			instruction="%add6 = add nsw i32 %c.addr.01, %n",
+			label="add _add6",
+			type=add];
+		"_c.addr.01" -> _add6;
+		_add7	[bbID="for.body",
+			bitwidth=32,
+			id=1,
+			instruction="%add7 = add nsw i32 %div, %c.addr.01",
+			label="add _add7",
+			type=add];
+		"_c.addr.01" -> _add7;
+		_add9	[bbID="for.body",
+			bitwidth=32,
+			id=1,
+			instruction="%add9 = add nsw i32 %c.addr.01, %b",
+			label="add _add9",
+			type=add];
+		"_c.addr.01" -> _add9;
+		_add11 -> "_c.addr.01"	[style=dashed];
+		_add	[bbID="for.body",
+			bitwidth=32,
+			id=1,
+			instruction="%add = add nsw i32 %b, 50",
+			label="add _add",
+			type=add];
+		_mul	[bbID="for.body",
+			bitwidth=32,
+			id=1,
+			instruction="%mul = mul nsw i32 %add, %add1",
+			label="mul _mul",
+			type=mul];
+		_add -> _mul;
+		cst__add_0	[bbID="for.body",
+			id=1,
+			label=50,
+			type=constant,
+			value=0];
+		cst__add_0 -> _add;
+		_add1	[bbID="for.body",
+			bitwidth=32,
+			id=1,
+			instruction="%add1 = add nsw i32 %n, 100",
+			label="add _add1",
+			type=add];
+		_add1 -> _mul;
+		cst__add1_0	[bbID="for.body",
+			id=1,
+			label=100,
+			type=constant,
+			value=0];
+		cst__add1_0 -> _add1;
+		_mul3	[bbID="for.body",
+			bitwidth=32,
+			id=1,
+			instruction="%mul3 = mul nsw i32 %mul, %add2",
+			label="mul _mul3",
+			type=mul];
+		_mul -> _mul3;
+		_add2 -> _mul3;
+		cst__add2_0	[bbID="for.body",
+			id=1,
+			label=40,
+			type=constant,
+			value=0];
+		cst__add2_0 -> _add2;
+		_mul5	[bbID="for.body",
+			bitwidth=32,
+			id=1,
+			instruction="%mul5 = mul nsw i32 %mul3, %add4",
+			label="mul _mul5",
+			type=mul];
+		_mul3 -> _mul5;
+		_add4 -> _mul5;
+		cst__add4_0	[bbID="for.body",
+			id=1,
+			label=10,
+			type=constant,
+			value=0];
+		cst__add4_0 -> _add4;
+		_div	[bbID="for.body",
+			bitwidth=32,
+			id=1,
+			instruction="%div = sdiv i32 %mul5, %add6",
+			label="sdiv _div",
+			type=sdiv];
+		_mul5 -> _div;
+		_add6 -> _div;
+		_div -> _add7;
+		_add7 -> _rem;
+		_xor	[bbID="for.body",
+			bitwidth=32,
+			id=1,
+			instruction="%xor = xor i32 %mul8, %mul10",
+			label="xor _xor",
+			type=xor];
+		_mul8 -> _xor;
+		_mul10	[bbID="for.body",
+			bitwidth=32,
+			id=1,
+			instruction="%mul10 = mul nsw i32 %add9, %b",
+			label="mul _mul10",
+			type=mul];
+		_add9 -> _mul10;
+		_mul10 -> _xor;
+		_xor -> _add11;
+		cst__inc_0	[bbID="for.body",
+			id=1,
+			label=1,
+			type=constant,
+			value=0];
+		cst__inc_0 -> _inc;
+		"br_for.body"	[bbID="for.body",
+			bitwidth=0,
+			id=1,
+			instruction="br i1 %cmp, label %for.body, label %for.end",
+			label="br_for.body",
+			type=br];
+		_cmp -> "br_for.body";
+		cst__cmp_0	[bbID="for.body",
+			id=1,
+			label=100,
+			type=constant,
+			value=0];
+		cst__cmp_0 -> _cmp;
+	}
+	_a -> "_a.addr.03";
+	_c -> "_c.addr.01";
+	_add11 -> "ret_for.end";
+	_b -> _rem;
+	_b -> _add;
+	_b -> _add9;
+	_b -> _mul10;
+	_n -> _add1;
+	_n -> _add6;
+	_n -> _mul8;
+}

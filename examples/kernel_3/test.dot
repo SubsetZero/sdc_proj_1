@@ -1,0 +1,216 @@
+digraph "" {
+	node [label="\N"];
+	subgraph cluster_entry {
+		graph [color=darkgreen,
+			label=entry
+		];
+		_a	[bbID=entry,
+			id=0,
+			type=argument];
+		_b	[bbID=entry,
+			id=0,
+			type=argument];
+		_c	[bbID=entry,
+			id=0,
+			type=argument];
+		_d	[bbID=entry,
+			id=0,
+			type=argument];
+	}
+	subgraph "cluster_for.body" {
+		graph [color=darkgreen,
+			label="for.body"
+		];
+		"_i.02"	[bbID="for.body",
+			bitwidth=32,
+			id=1,
+			instruction="%i.02 = phi i32 [ 0, %entry ], [ %inc, %for.body ]",
+			label="phi _i.02",
+			type=phi];
+		_inc	[bbID="for.body",
+			bitwidth=32,
+			id=1,
+			instruction="%inc = add nuw nsw i32 %i.02, 1",
+			label="add _inc",
+			type=add];
+		"_i.02" -> _inc;
+		_0	[bbID="for.body",
+			bitwidth=64,
+			id=1,
+			instruction="%0 = zext i32 %i.02 to i64",
+			label="zext _0",
+			type=zext];
+		"_i.02" -> _0;
+		_2	[bbID="for.body",
+			bitwidth=64,
+			id=1,
+			instruction="%2 = zext i32 %i.02 to i64",
+			label="zext _2",
+			type=zext];
+		"_i.02" -> _2;
+		_4	[bbID="for.body",
+			bitwidth=64,
+			id=1,
+			instruction="%4 = zext i32 %i.02 to i64",
+			label="zext _4",
+			type=zext];
+		"_i.02" -> _4;
+		_6	[bbID="for.body",
+			bitwidth=64,
+			id=1,
+			instruction="%6 = zext i32 %i.02 to i64",
+			label="zext _6",
+			type=zext];
+		"_i.02" -> _6;
+		_inc -> "_i.02"	[style=dashed];
+		_cmp	[bbID="for.body",
+			bitwidth=1,
+			id=1,
+			instruction="%cmp = icmp ult i32 %inc, 100",
+			label="icmp_ult _cmp",
+			type=icmp];
+		_inc -> _cmp;
+		"cst__i.02_0"	[bbID="for.body",
+			id=1,
+			label=0,
+			type=constant,
+			value=0];
+		"cst__i.02_0" -> "_i.02";
+		"_acc.01"	[bbID="for.body",
+			bitwidth=32,
+			id=1,
+			instruction="%acc.01 = phi i32 [ 0, %entry ], [ %add7, %for.body ]",
+			label="phi _acc.01",
+			type=phi];
+		_add7	[bbID="for.body",
+			bitwidth=32,
+			id=1,
+			instruction="%add7 = add nsw i32 %acc.01, %add",
+			label="add _add7",
+			type=add];
+		"_acc.01" -> _add7;
+		_add7 -> "_acc.01"	[style=dashed];
+		"cst__acc.01_0"	[bbID="for.body",
+			id=1,
+			label=0,
+			type=constant,
+			value=0];
+		"cst__acc.01_0" -> "_acc.01";
+		_arrayidx	[bbID="for.body",
+			bitwidth=32,
+			id=1,
+			instruction="%arrayidx = getelementptr inbounds i32, i32* %a, i64 %0",
+			label="getelementptr _arrayidx",
+			type=getelementptr];
+		_0 -> _arrayidx;
+		_1	[bbID="for.body",
+			bitwidth=32,
+			id=1,
+			instruction="%1 = load i32, i32* %arrayidx, align 4",
+			label=load__1,
+			type=load];
+		_arrayidx -> _1;
+		_mul	[bbID="for.body",
+			bitwidth=32,
+			id=1,
+			instruction="%mul = mul nsw i32 %1, %3",
+			label="mul _mul",
+			type=mul];
+		_1 -> _mul;
+		_arrayidx2	[bbID="for.body",
+			bitwidth=32,
+			id=1,
+			instruction="%arrayidx2 = getelementptr inbounds i32, i32* %b, i64 %2",
+			label="getelementptr _arrayidx2",
+			type=getelementptr];
+		_2 -> _arrayidx2;
+		_3	[bbID="for.body",
+			bitwidth=32,
+			id=1,
+			instruction="%3 = load i32, i32* %arrayidx2, align 4",
+			label=load__3,
+			type=load];
+		_arrayidx2 -> _3;
+		_3 -> _mul;
+		_sub	[bbID="for.body",
+			bitwidth=32,
+			id=1,
+			instruction="%sub = sub nsw i32 %mul, %5",
+			label="sub _sub",
+			type=sub];
+		_mul -> _sub;
+		_arrayidx4	[bbID="for.body",
+			bitwidth=32,
+			id=1,
+			instruction="%arrayidx4 = getelementptr inbounds i32, i32* %c, i64 %4",
+			label="getelementptr _arrayidx4",
+			type=getelementptr];
+		_4 -> _arrayidx4;
+		_5	[bbID="for.body",
+			bitwidth=32,
+			id=1,
+			instruction="%5 = load i32, i32* %arrayidx4, align 4",
+			label=load__5,
+			type=load];
+		_arrayidx4 -> _5;
+		_5 -> _sub;
+		_add	[bbID="for.body",
+			bitwidth=32,
+			id=1,
+			instruction="%add = add nsw i32 %sub, %7",
+			label="add _add",
+			type=add];
+		_sub -> _add;
+		_arrayidx6	[bbID="for.body",
+			bitwidth=32,
+			id=1,
+			instruction="%arrayidx6 = getelementptr inbounds i32, i32* %d, i64 %6",
+			label="getelementptr _arrayidx6",
+			type=getelementptr];
+		_6 -> _arrayidx6;
+		_7	[bbID="for.body",
+			bitwidth=32,
+			id=1,
+			instruction="%7 = load i32, i32* %arrayidx6, align 4",
+			label=load__7,
+			type=load];
+		_arrayidx6 -> _7;
+		_7 -> _add;
+		_add -> _add7;
+		cst__inc_0	[bbID="for.body",
+			id=1,
+			label=1,
+			type=constant,
+			value=0];
+		cst__inc_0 -> _inc;
+		"br_for.body"	[bbID="for.body",
+			bitwidth=0,
+			id=1,
+			instruction="br i1 %cmp, label %for.body, label %for.end",
+			label="br_for.body",
+			type=br];
+		_cmp -> "br_for.body";
+		cst__cmp_0	[bbID="for.body",
+			id=1,
+			label=100,
+			type=constant,
+			value=0];
+		cst__cmp_0 -> _cmp;
+	}
+	subgraph "cluster_for.end" {
+		graph [color=darkgreen,
+			label="for.end"
+		];
+		"ret_for.end"	[bbID="for.end",
+			bitwidth=0,
+			id=2,
+			instruction="ret i32 %add7",
+			label="ret_for.end",
+			type=ret];
+	}
+	_add7 -> "ret_for.end";
+	_a -> _arrayidx;
+	_b -> _arrayidx2;
+	_c -> _arrayidx4;
+	_d -> _arrayidx6;
+}
