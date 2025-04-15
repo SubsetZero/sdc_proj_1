@@ -71,37 +71,7 @@ class Resource_Manager:
 
 					self.constraints.add_constraint(lhs_dictionary, "geq", 1)	
 
-	def add_resource_constraints1(self, resource_dict):
-
-		self.check_resource_dict(resource_dict)
-		
-		# Obtain a topological ordering of nodes in the CDFG.
-		sorted_nodes = get_topological_order(self.cdfg)
-		
-		# For each resource type defined in the dictionary, group nodes by basic block.
-		for resource_type, max_units in resource_dict.items():
-			# Dictionary to group nodes: key is basic block id; value is list of nodes.
-			nodes_by_bb = {}
-			for node in sorted_nodes:
-				# Check if the node is of the given resource type.
-				if node.attr.get("type") == resource_type:
-					bb = node.attr.get("id")  # basic block id
-					nodes_by_bb.setdefault(bb, []).append(node)
-			
-			# For each basic block, add ordering constraints among nodes of this resource type.
-			for bb, nodes in nodes_by_bb.items():
-				# We assume nodes are already in topological order.
-				for i in range(max_units, len(nodes)):
-					lhs_dictionary = {}
-					# Use a consistent naming scheme (assumes that add_nodes_to_ilp uses node.attr['label'])
-					later_var = f"sv{nodes[i].attr.get('label')}"
-					earlier_var = f"sv{nodes[i - max_units].attr.get('label')}"
-					lhs_dictionary[later_var] = 1
-					lhs_dictionary[earlier_var] = -1
-					
-					# Add constraint: sv(later) - sv(earlier) >= 1
-					self.constraints.add_constraint(lhs_dictionary, "geq", 1)
-
+	
 
 
 	# function to add resources constraints for pipelined scheduling
