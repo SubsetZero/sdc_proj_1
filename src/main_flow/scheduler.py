@@ -244,22 +244,8 @@ class Scheduler:
 	Returns the numeric id of the BB to be pipelined
 	"""
 	def find_loop_bb(self):
-		max_latency = -1
-		loop_bb = None
-
-		for bb in self.cdfg:
-			supersink_latency = None
-
-			for node in self.cdfg:
-				if node.attr.get("id") == bb.attr.get("id") and node.attr.get("type") == "supersink":
-					supersink_latency = self.ilp.get_operation_timing_solution(node)
-					break
-
-			if supersink_latency is not None and supersink_latency > max_latency:
-				max_latency = supersink_latency
-				loop_bb = bb
-
-		return loop_bb
+		svs = self.get_sink_svs()
+		return max(svs, key=svs.get)[6:]
 
 
 
